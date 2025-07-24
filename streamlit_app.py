@@ -278,9 +278,7 @@ else:
                 Every day with you is a blessing, a joy, and an adventure I cherish.
                 You fill my life with laughter, warmth, and a love I never knew was possible.
             </p>
-            <p class="text-2xl font-bold text-red-600">
-                Will you do me the immense honor of being my wife?
-            </p>
+            
             <p class="text-3xl font-extrabold mt-6 text-pink-800">
                 Anh yêu em, Từ Thanh Hằng!
             </p>
