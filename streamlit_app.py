@@ -23,6 +23,20 @@ st.markdown("""
             overflow: hidden; /* Hide overflow for heart animations */
         }
 
+        /* Hide Streamlit's default header and toolbar for a cleaner look */
+        [data-testid="stHeader"] {
+            display: none !important;
+        }
+        [data-testid="stToolbar"] {
+            display: none !important;
+        }
+        [data-testid="stDecoration"] { /* This often refers to the top bar/decoration */
+            display: none !important;
+        }
+        [data-testid="stSidebar"] { /* In case it's not fully collapsed */
+            display: none !important;
+        }
+
         /* Target Streamlit's main app container to apply background and centering */
         [data-testid="stAppViewContainer"] {
             background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%); /* Soft pink gradient */
@@ -32,11 +46,13 @@ st.markdown("""
             min-height: 100vh;
             width: 100vw;
             overflow: hidden; /* Important for heart animations */
+            padding: 0 !important; /* Remove default padding */
         }
 
         /* Target Streamlit's main vertical block container to center content */
         [data-testid="stVerticalBlock"] {
             display: flex;
+            flex-direction: column; /* Ensure content stacks vertically */
             justify-content: center;
             align-items: center;
             width: 100%;
@@ -44,12 +60,16 @@ st.markdown("""
         }
 
         /* Target Streamlit's element container within the vertical block for centering */
+        /* This ensures the actual content within the block is centered */
         [data-testid="stVerticalBlock"] > div:first-child {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100%;
+            padding: 1rem; /* Add some padding to prevent content from touching edges */
+            box-sizing: border-box; /* Include padding in width/height */
         }
 
         /* Styling for the main proposal card container */
@@ -58,14 +78,40 @@ st.markdown("""
             backdrop-filter: blur(10px); /* Frosted glass effect */
             border-radius: 2rem; /* More rounded corners */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Softer shadow */
-            padding: 2.5rem;
+            padding: 2.5rem; /* Increased padding for better spacing */
             text-align: center;
             max-width: 90%;
-            width: 500px;
+            width: 500px; /* Fixed width for larger screens */
             position: relative;
             z-index: 10; /* Ensure it's above the heart animations */
             animation: fadeInScale 1s ease-out forwards; /* Fade-in animation */
+            margin: auto; /* Center the container itself */
         }
+
+        /* Media query for smaller screens to adjust max-width and padding */
+        @media (max-width: 600px) {
+            .proposal-container {
+                padding: 1.5rem; /* Smaller padding on mobile */
+                width: 95%; /* Take more width on small screens */
+            }
+            .proposal-title {
+                font-size: 2.5rem; /* Smaller title on mobile */
+            }
+            .proposal-message p {
+                font-size: 1rem; /* Smaller text on mobile */
+            }
+            .proposal-message .text-2xl {
+                font-size: 1.5rem; /* Adjust specific text size */
+            }
+            .proposal-message .text-3xl {
+                font-size: 2rem; /* Adjust specific text size */
+            }
+            div.stButton > button {
+                padding: 0.8rem 2rem; /* Smaller button padding */
+                font-size: 1rem; /* Smaller button font */
+            }
+        }
+
 
         /* Keyframe animation for the proposal container fade-in */
         @keyframes fadeInScale {
