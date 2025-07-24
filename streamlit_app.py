@@ -246,7 +246,7 @@ else:
     # It checks if the interval is already set to prevent multiple animations.
     st.markdown(f"""
         <script>
-            function createHeart() {
+            function createHeart() {{
                 const heartContainer = document.getElementById('heart-container');
                 if (!heartContainer) return; // Ensure the container exists
 
@@ -261,16 +261,16 @@ else:
                 heartContainer.appendChild(heart);
 
                 // Remove heart element after its animation completes to prevent DOM clutter
-                heart.addEventListener('animationend', () => {
+                heart.addEventListener('animationend', () => {{
                     heart.remove();
-                });
-            }
+                }});
+            }}
 
             // Start the heart animation interval only if it's not already running.
             // This prevents multiple intervals from being created on Streamlit reruns.
-            if (typeof window.heartInterval === 'undefined' || window.heartInterval === null) {
+            if (typeof window.heartInterval === 'undefined' || window.heartInterval === null) {{
                 window.heartInterval = setInterval(createHeart, 300); // Create a new heart every 300 milliseconds
-            }
+            }}
         </script>
     """, unsafe_allow_html=True)
 
