@@ -3,7 +3,7 @@ import streamlit as st
 # Set Streamlit page configuration for a wider layout and custom title
 st.set_page_config(
     layout="centered",
-    page_title="Will You Marry Me, Từ Thanh Hằng?",
+    page_title="Thiệp Cưới - Từ Thanh Hằng & [Tên Bạn]", # Updated title for wedding invitation
     initial_sidebar_state="collapsed" # Hide sidebar for a cleaner look
 )
 
@@ -140,8 +140,8 @@ st.markdown("""
             font-size: 1.3rem;
             line-height: 1.6;
             margin-bottom: 2rem;
-            opacity: 0; /* Hidden by default */
-            transform: translateY(20px); /* Starts slightly below */
+            opacity: 1; /* Always visible for an invitation */
+            transform: translateY(0); /* Always visible for an invitation */
             transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition */
         }
 
@@ -241,8 +241,9 @@ st.markdown("""
 
 # Use Streamlit's session state to manage the visibility of the proposal message.
 # This ensures the state persists across reruns caused by button clicks.
+# For a wedding invitation, we'll make the content visible by default.
 if 'revealed' not in st.session_state:
-    st.session_state.revealed = False
+    st.session_state.revealed = True # Set to True so content is always shown
 
 # Heart animation container injected as raw HTML.
 # JavaScript will dynamically add heart elements to this container.
@@ -252,73 +253,120 @@ st.markdown('<div class="heart-animation-container" id="heart-container"></div>'
 # Using st.markdown to create this div allows for custom styling.
 st.markdown('<div class="proposal-container">', unsafe_allow_html=True)
 
-# Display the initial title using st.markdown with the custom class
-st.markdown('<h1 class="proposal-title">My Dearest Từ Thanh Hằng,</h1>', unsafe_allow_html=True)
+# Display the main wedding invitation title
+st.markdown('<h1 class="proposal-title">Thiệp Mời Lễ Cưới</h1>', unsafe_allow_html=True)
 
-# Display the introductory message
+# Display the couple's names
 st.markdown("""
-    <p class="text-gray-600 text-lg mb-4">
-        There are moments in life when words feel too small to express the depth of one's feelings.
-        But I hope these words, from the bottom of my heart, convey everything.
+    <p class="text-gray-700 text-2xl font-bold mb-4">
+        Từ Thanh Hằng & [Tên Bạn]
     </p>
 """, unsafe_allow_html=True)
 
-# Conditionally display the "Reveal" button or the proposal message
-if not st.session_state.revealed:
-    # If the message hasn't been revealed, show the button.
-    # When the button is clicked, it sets 'revealed' to True and reruns the app.
-    if st.button("Click to Reveal My Heart"):
-        st.session_state.revealed = True
-        st.rerun() # Rerun the app to show the proposal message and trigger heart animation JS
-else:
-    # If the message has been revealed, display the proposal text.
-    st.markdown("""
-        <div id="proposalMessage" class="proposal-message show mt-8">
-            <p class="text-xl font-semibold mb-4 text-pink-700">
-                Every day with you is a blessing, a joy, and an adventure I cherish.
-                You fill my life with laughter, warmth, and a love I never knew was possible.
-            </p>
-            <p class="text-2xl font-bold text-red-600">
-                Will you do me the immense honor of being my wife?
-            </p>
-            <p class="text-3xl font-extrabold mt-6 text-pink-800">
-                Anh yêu em, Từ Thanh Hằng!
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
+# Display the main invitation message and details
+st.markdown("""
+    <div id="proposalMessage" class="proposal-message show mt-8">
+        <p class="text-xl font-semibold mb-4 text-pink-700">
+            Chúng tôi trân trọng kính mời quý vị và các bạn đến chung vui cùng chúng tôi
+            trong ngày trọng đại của cuộc đời.
+        </p>
+        <p class="text-2xl font-bold text-red-600 mb-2">
+            Thời Gian: <span class="text-pink-800">Ngày [Ngày], Tháng [Tháng], Năm [Năm]</span>
+        </p>
+        <p class="text-2xl font-bold text-red-600 mb-2">
+            Địa Điểm: <span class="text-pink-800">[Địa điểm tiệc cưới]</span>
+        </p>
+        <p class="text-2xl font-bold text-red-600">
+            Lễ Thành Hôn: <span class="text-pink-800">[Giờ]</span>
+        </p>
+        <p class="text-xl font-semibold mt-6 text-gray-700">
+            Sự hiện diện của quý vị là niềm vinh hạnh lớn lao cho gia đình chúng tôi.
+        </p>
+        <p class="text-3xl font-extrabold mt-6 text-pink-800">
+            Trân trọng kính mời!
+        </p>
+    </div>
+""", unsafe_allow_html=True)
 
-    # Inject JavaScript for the heart animation.
-    # This script will only run when the 'revealed' state is True.
-    # It checks if the interval is already set to prevent multiple animations.
-    st.markdown(f"""
-        <script>
-            function createHeart() {{
-                const heartContainer = document.getElementById('heart-container');
-                if (!heartContainer) return; // Ensure the container exists
+# Inject JavaScript for the heart animation and background music.
+st.markdown(f"""
+    <script>
+        // Function to create and animate hearts
+        function createHeart() {{
+            const heartContainer = document.getElementById('heart-container');
+            if (!heartContainer) return;
 
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                const size = Math.random() * 20 + 10; // Random size for hearts
-                heart.style.width = size + 'px';
-                heart.style.height = size + 'px';
-                heart.style.left = (Math.random() * 100) + 'vw'; // Random horizontal starting position
-                heart.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Random animation duration
-                heart.style.animationDelay = (Math.random() * 2) + 's'; // Random delay before animation starts
-                heartContainer.appendChild(heart);
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            const size = Math.random() * 20 + 10;
+            heart.style.width = size + 'px';
+            heart.style.height = size + 'px';
+            heart.style.left = (Math.random() * 100) + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDelay = (Math.random() * 2) + 's';
+            heartContainer.appendChild(heart);
 
-                // Remove heart element after its animation completes to prevent DOM clutter
-                heart.addEventListener('animationend', () => {{
-                    heart.remove();
+            heart.addEventListener('animationend', () => {{
+                heart.remove();
+            }});
+        }}
+
+        // Start the heart animation interval only if it's not already running.
+        if (typeof window.heartInterval === 'undefined' || window.heartInterval === null) {{
+            window.heartInterval = setInterval(createHeart, 300);
+        }}
+
+        // Function to play background music
+        function playBackgroundMusic() {{
+            let audio = document.getElementById('background-music');
+            if (!audio) {{
+                audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); // Royalty-free music
+                audio.id = 'background-music';
+                audio.loop = true; // Loop the music
+                audio.volume = 0.5; // Set a default volume
+                document.body.appendChild(audio);
+            }}
+            // Attempt to play, catch error if user interaction is required
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {{
+                playPromise.then(_ => {{
+                    // Autoplay started!
+                }}).catch(error => {{
+                    // Autoplay was prevented. Show a "Play Music" button.
+                    console.log("Autoplay prevented:", error);
+                    const musicButton = document.createElement('button');
+                    musicButton.textContent = 'Bật Nhạc';
+                    musicButton.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: linear-gradient(45deg, #4CAF50, #8BC34A);
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        border: none;
+                        cursor: pointer;
+                        z-index: 100;
+                    `;
+                    musicButton.onclick = () => {{
+                        audio.play();
+                        musicButton.remove(); // Remove button once music plays
+                    }};
+                    document.body.appendChild(musicButton);
                 }});
             }}
+        }}
 
-            // Start the heart animation interval only if it's not already running.
-            // This prevents multiple intervals from being created on Streamlit reruns.
-            if (typeof window.heartInterval === 'undefined' || window.heartInterval === null) {{
-                window.heartInterval = setInterval(createHeart, 300); // Create a new heart every 300 milliseconds
-            }}
-        </script>
-    """, unsafe_allow_html=True)
+        // Play music when the document is loaded
+        // This is crucial for Streamlit as it reruns Python, but JS persists.
+        // We only want to attempt playing music once per page load.
+        if (!window.musicPlayedAttempted) {{
+            playBackgroundMusic();
+            window.musicPlayedAttempted = true;
+        }}
+    </script>
+""", unsafe_allow_html=True)
 
 # Close the proposal container div
 st.markdown('</div>', unsafe_allow_html=True)
